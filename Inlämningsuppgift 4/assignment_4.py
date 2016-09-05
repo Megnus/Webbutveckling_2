@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
@@ -10,12 +10,13 @@ def index():
 
 @app.route('/contact')
 def contact():
-    return 'Hello, World!'
+    return render_template("contact.html")
 
 
 @app.route('/movies')
 def movies():
-    return 'Hello, World!'
+    movies = ["Godfather", "Hudson Hawk", "Die Hard"]
+    return render_template("movies.html", movies=movies)
 
 
 @app.route('/hello/<username>')
