@@ -1,3 +1,10 @@
+"""
+    Inlämningsuppgift 4
+    Magnus Sundström
+    2016-09-06
+"""
+
+
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
