@@ -1,3 +1,9 @@
+"""
+    Inlämningsuppgift 2
+    Magnus Sundström
+    2016-09-06
+"""
+
 # Uppgift 1
 def printNumbers(val):
     for i in range(1, val + 1):
@@ -25,7 +31,7 @@ def calculate_average(numbers):
         sum += i
         count += 1
     return sum / count
-    #return sum(numbers) / len(numbers)
+    # return sum(numbers) / len(numbers)
 
 
 # Uppgift 4

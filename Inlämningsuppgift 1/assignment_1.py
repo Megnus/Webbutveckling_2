@@ -1,3 +1,9 @@
+"""
+    Inlämningsuppgift 1
+    Magnus Sundström
+    2016-09-06
+"""
+
 # Uppgift 1
 print(5 * 2  <= 12)
 print(55 > 22)

@@ -1,3 +1,9 @@
+"""
+    Inlämningsuppgift 3
+    Magnus Sundström
+    2016-09-06
+"""
+
 # Del 1: Input
 persons = []
 while True:
