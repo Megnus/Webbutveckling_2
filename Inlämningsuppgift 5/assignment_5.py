@@ -17,6 +17,7 @@ tasks = [
     }
 ]
 
+
 @app.route('/')
 def index():
     print('yoyoyo')
@@ -25,10 +26,11 @@ def index():
 
 @app.route('/api', methods=['POST'])
 def api():
-    print('yahoo')
-    print(request.form['firstName']);
-    # return jsonify({'tasks': tasks})
-    return render_template("index.html")
+    if request.method == 'POST':
+        print('yahoo')
+        print(request.form['firstName']);
+        # return jsonify({'tasks': tasks})
+        return render_template("index.html")
 
 
 @app.route('/contact')
@@ -56,14 +58,14 @@ def page_not_found(error):
 if __name__ == "__main__":
     app.run(debug=True)
 
-#=======
-#import json
-#from pprint import pprint
+# =======
+# import json
+# from pprint import pprint
 
-#with open('data.json') as data_file:
+# with open('data.json') as data_file:
 #    data = json.load(data_file)
 
-#with open('dataDump.json', 'w') as f:
+# with open('dataDump.json', 'w') as f:
 #    json.dump(data, f)
 
-#pprint(data)
+# pprint(data)
