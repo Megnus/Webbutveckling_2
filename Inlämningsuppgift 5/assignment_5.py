@@ -24,13 +24,16 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/api', methods=['POST'])
+@app.route('/api', methods=['POST', 'GET'])
 def api():
+    print(request.method)
     if request.method == 'POST':
-        print('yahoo')
-        print(request.form['firstName']);
-        # return jsonify({'tasks': tasks})
-        return render_template("index.html")
+        print('Request method: ' + request.method)
+        print('First name: ' + request.form['firstName'])
+        print('Last name: ' + request.form['lastName'])
+        #return jsonify({'tasks': tasks})
+
+    return render_template("index.html")
 
 
 @app.route('/contact')
@@ -54,7 +57,7 @@ def hello(name):
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
-
+print(__name__)
 if __name__ == "__main__":
     app.run(debug=True)
 
