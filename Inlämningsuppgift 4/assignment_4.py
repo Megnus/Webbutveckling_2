@@ -20,12 +20,6 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route('/movies')
-def movies():
-    titles = ["Godfather", "Hudson Hawk", "Die Hard"]
-    return render_template("movies.html", titles=titles)
-
-
 @app.route('/hello/<name>')
 def hello(name):
     return render_template("hello.html", name=name)

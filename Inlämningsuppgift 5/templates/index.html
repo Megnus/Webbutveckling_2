@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>Contact form</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="center">
-        <h1>MR ALBERT</h1>
-        <img src="{{ url_for('static', filename='einstein.png') }}" style="float:right">
-        <p>Albert Einstein, född 14 mars 1879 i Ulm i Tyskland, död 18 april 1955 i Princeton i New Jersey, var en tysk-judisk
-        teoretisk fysiker. Han är mest känd för att ha utvecklat teorin om allmän relativitet, vilken medförde en
-        revolution inom fysiken. Einstein räknas som en av fäderna till den moderna fysiken och anses av vissa ha haft
-        ett av de mest kreativa intellekten någonsin. Han förutspådde bland annat gravitationsvågor 1916, vilket
-        forskare publicerade direkta bevis för 2016, hundra år efter förutsägelsen. Han fick 1921 års
-        Nobelpris i fysik för sin upptäckt av lagen för den fotoelektriska effekten. Einstein är en av 1900-talets mest
-        framträdande gestalter. Han har kommit att personifiera vetenskaplig genialitet. Under sin livstid erhöll
-        han såväl schweiziskt som amerikanskt medborgarskap. Verk av Einstein brändes under bokbålen runt om i Nazityskland 1933.</p>
+        <h3>Contact form</h3>
+        <p>Add a person by fill in the form and click the submit button</p>
     </div>
-    <form enctype='application/json' action="/api" method="post">
-        <input type="text" name="firstName">
-        <input type="text" name="lastName">
-        <button type="submit">Submit</button>
+    <form id="contact-form" class="center" action="/add" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <label for="name">Your firstname:</label><br>
+            <input class="name" name="firstname" type="text" value="" size="30" /><br>
+        </div>
+        <div class="row">
+            <label for="name">Your lastname:</label><br>
+            <input class="name" name="lastname" type="text" value="" size="30" /><br>
+        </div>
+        <div class="row">
+            <label for="name">Your snn:</label><br>
+            <input class="name" name="snn" type="text" value="" size="30" /><br>
+        </div>
+        <div class="row">
+            <label for="name">Your email:</label><br>
+            <input class="name" name="email" type="text" value="" size="30" /><br>
+        </div>
+                <div class="row">
+            <label for="name">Your address:</label><br>
+            <input id="name" class="input" name="address" type="text" value="" size="30" />
+        </div>
+        <br>
+        <input id="submit_button" type="submit" value="Submit"/>
     </form>
 </body>
 </html>

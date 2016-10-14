@@ -1,57 +1,52 @@
 from flask import Flask, request, render_template, jsonify, json
+from werkzeug.utils import redirect
 
 app = Flask(__name__)
-
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web',
-        'done': False
-    }
-]
 
 
 @app.route('/')
 def index():
-    print('yoyoyo')
-    return render_template("index.html")
+    print('index')
+    return render_template('index.html')
 
 
-@app.route('/api', methods=['POST', 'GET'])
+@app.route('/add', methods=['POST', 'GET'])
 def api():
-    print(request.method)
+    # print(request.method)
     if request.method == 'POST':
-        print('Request method: ' + request.method)
-        print('First name: ' + request.form['firstName'])
-        print('Last name: ' + request.form['lastName'])
-        start(request.form['firstName'], request.form['lastName'], request.method)
-        #return jsonify({'tasks': tasks})
+        add_persons(request.form['firstname'],
+                    request.form['lastname'],
+                    request.form['snn'],
+                    request.form['email'],
+                    request.form['address'])
+        # return jsonify({'persons': persons})
+        print_persons()
+        return redirect('/')
 
-    return render_template("index.html")
+    return render_template('index.html')
 
 
-@app.route('/contact')
+@app.route('/done')
 def contact():
+    return render_template('done.html')
+
+
+@app.route('/render')
+def render():
     return render_template("contact.html")
 
 
-@app.route('/movies')
-def movies():
-    print('yoyoyo')
-    titles = ["Godfather", "Hudson Hawk", "Die Hard"]
-    return render_template("movies.html", titles=titles)
+@app.route('/users')
+def users():
+    print('users')
+    # titles = ["Godfather", "Hudson Hawk", "Die Hard"]
+    print(read_persons())
+    return render_template('users.html', users=read_persons()['persons'])
 
 
 @app.route('/hello/<name>')
 def hello(name):
-    return render_template("hello.html", name=name)
+    return render_template("users.html", name=name)
 
 
 @app.errorhandler(404)
@@ -59,50 +54,50 @@ def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
 
-def read_players():
-    players = ["players"]
+def read_persons():
+    persons = {'persons': []}
     # noinspection PyBroadException
     try:
-        file = open('players.json', 'r')
-        players = json.loads(file.read())
+        file = open('persons.json', 'r')
+        persons = json.loads(file.read())
         file.close()
     except:
         print("Could not read file or file is empty")
-    return players
+    # return players
+    return persons
 
 
-def write_players(players):
+def write_persons(persons):
     # noinspection PyBroadException
     try:
-        file = open('players.json', 'w')
-        file.write(json.dumps(players))
+        file = open('persons.json', 'w')
+        file.write(json.dumps(persons))
         file.close()
     except:
         print("Could not read file")
 
 
-def add_player(firstname, lastname, country):
-    players = read_players()
-    players.append({'firstname': firstname,
+def add_persons(firstname, lastname, snn, email, address):
+    persons = read_persons()
+    persons['persons'].append({'firstname': firstname,
                     'lastname': lastname,
-                    'country': country})
-    write_players(players)
+                    'snn': snn,
+                    'email': email,
+                    'address': address})
+    write_persons(persons)
 
 
-def print_players():
-    players = read_players()
-    for i in range(1, len(players)):
-        print(", ".join([players[i]["firstname"],
-                         players[i]["lastname"],
-                         players[i]["country"]]))
+def print_persons():
+    persons = read_persons()
+    for i in range(1, len(persons)):
+        print(", ".join([persons['persons'][i]["firstname"],
+                         persons['persons'][i]["lastname"],
+                         persons['persons'][i]["snn"],
+                         persons['persons'][i]["email"],
+                         persons['persons'][i]["address"]]))
 
 
-def start(firstname, lastname, request):
-    add_player(firstname, lastname, request)
-
-
-
-print(__name__)
+# print(__name__)
 if __name__ == "__main__":
     app.run(debug=True)
 
@@ -120,3 +115,19 @@ if __name__ == "__main__":
 #    json.dump(data, f)
 
 # pprint(data)
+
+
+# tasks = [
+#     {
+#         'id': 1,
+#         'title': u'Buy groceries',
+#         'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
+#         'done': False
+#     },
+#     {
+#         'id': 2,
+#         'title': u'Learn Python',
+#         'description': u'Need to find a good Python tutorial on the web',
+#         'done': False
+#     }
+# ]
