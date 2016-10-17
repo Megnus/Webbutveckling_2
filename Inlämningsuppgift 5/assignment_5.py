@@ -1,52 +1,36 @@
 from flask import Flask, request, render_template, jsonify, json
-from werkzeug.utils import redirect
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    print('index')
     return render_template('index.html')
 
 
-@app.route('/add', methods=['POST', 'GET'])
-def api():
-    # print(request.method)
+@app.route('/done', methods=['POST', 'GET'])
+def done():
     if request.method == 'POST':
-        add_persons(request.form['firstname'],
-                    request.form['lastname'],
-                    request.form['snn'],
-                    request.form['email'],
-                    request.form['address'])
-        # return jsonify({'persons': persons})
-        print_persons()
-        return redirect('/')
-
-    return render_template('index.html')
-
-
-@app.route('/done')
-def contact():
+        add_users(request.form['firstname'],
+                  request.form['lastname'],
+                  request.form['ssn'],
+                  request.form['email'],
+                  request.form['address'])
     return render_template('done.html')
 
 
-@app.route('/render')
-def render():
-    return render_template("contact.html")
+@app.route('/users/<ssn>')
+def user(ssn):
+    users = read_users()['users']
+    for i in range(0, len(users)):
+        if users[i]['ssn'] == ssn:
+            return jsonify({'user': users[i]})
+    return render_template('page_not_found.html'), 404
 
 
 @app.route('/users')
 def users():
-    print('users')
-    # titles = ["Godfather", "Hudson Hawk", "Die Hard"]
-    print(read_persons())
-    return render_template('users.html', users=read_persons()['persons'])
-
-
-@app.route('/hello/<name>')
-def hello(name):
-    return render_template("users.html", name=name)
+    return jsonify(read_users())
 
 
 @app.errorhandler(404)
@@ -54,80 +38,37 @@ def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
 
-def read_persons():
-    persons = {'persons': []}
+def read_users():
+    users = {'users': []}
     # noinspection PyBroadException
     try:
-        file = open('persons.json', 'r')
-        persons = json.loads(file.read())
+        file = open('users.json', 'r')
+        users = json.loads(file.read())
         file.close()
     except:
         print("Could not read file or file is empty")
-    # return players
-    return persons
+    return users
 
 
-def write_persons(persons):
+def write_users(users):
     # noinspection PyBroadException
     try:
-        file = open('persons.json', 'w')
-        file.write(json.dumps(persons))
+        file = open('users.json', 'w')
+        file.write(json.dumps(users))
         file.close()
     except:
         print("Could not read file")
 
 
-def add_persons(firstname, lastname, snn, email, address):
-    persons = read_persons()
-    persons['persons'].append({'firstname': firstname,
-                    'lastname': lastname,
-                    'snn': snn,
-                    'email': email,
-                    'address': address})
-    write_persons(persons)
+def add_users(firstname, lastname, ssn, email, address):
+    persons = read_users()
+    persons['users'].append({'firstname': firstname,
+                             'lastname': lastname,
+                             'ssn': ssn,
+                             'email': email,
+                             'address': address})
+    write_users(persons)
 
 
-def print_persons():
-    persons = read_persons()
-    for i in range(1, len(persons)):
-        print(", ".join([persons['persons'][i]["firstname"],
-                         persons['persons'][i]["lastname"],
-                         persons['persons'][i]["snn"],
-                         persons['persons'][i]["email"],
-                         persons['persons'][i]["address"]]))
-
-
-# print(__name__)
 if __name__ == "__main__":
     app.run(debug=True)
-
-# set FLASK_APP=assignment_5.py
-# flask run
-
-# =======
-# import json
-# from pprint import pprint
-
-# with open('data.json') as data_file:
-#    data = json.load(data_file)
-
-# with open('dataDump.json', 'w') as f:
-#    json.dump(data, f)
-
-# pprint(data)
-
-
-# tasks = [
-#     {
-#         'id': 1,
-#         'title': u'Buy groceries',
-#         'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-#         'done': False
-#     },
-#     {
-#         'id': 2,
-#         'title': u'Learn Python',
-#         'description': u'Need to find a good Python tutorial on the web',
-#         'done': False
-#     }
-# ]
