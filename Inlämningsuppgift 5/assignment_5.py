@@ -1,3 +1,10 @@
+"""
+    Inlämningsuppgift 5
+    Magnus Sundström
+    2016-10-17
+"""
+
+
 from flask import Flask, request, render_template, jsonify, json
 
 app = Flask(__name__)
