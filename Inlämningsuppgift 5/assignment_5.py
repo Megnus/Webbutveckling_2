@@ -26,6 +26,7 @@ def done():
     return render_template('done.html')
 
 
+@app.route('/users/')
 @app.route('/users/<ssn>')
 def user(ssn):
     users = read_users()['users']
