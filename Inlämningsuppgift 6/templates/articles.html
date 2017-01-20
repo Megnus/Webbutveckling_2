@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact form</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<body>
+<ul>
+    {% for article in articles %}
+        <li>
+            <span> {{ article.title }} by {{ article.author }} </span>
+            <a  href="/article/{{ article.title }}">Read</a>
+            <a  href="/edit/{{ article.title }}">Edit</a>
+            <a  href="/delete/{{ article.title }}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

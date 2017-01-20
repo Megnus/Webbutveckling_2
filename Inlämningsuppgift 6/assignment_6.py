@@ -1,7 +1,7 @@
 """
     Inlämningsuppgift 6
     Magnus Sundström
-    2016-10-17
+    2017-01-20
 """
 
 
@@ -10,33 +10,62 @@ from flask import Flask, request, render_template, jsonify, json
 app = Flask(__name__)
 
 
+class Person:
+    def __init__(self, name, age=None, sex=None):
+        self.name, self.age, self.sex = name, age, sex
+
 @app.route('/')
 def index():
-    return render_template('index.html', setter='Hello here is som text')
+    return render_template('index.html', article=None, edit=False)
 
 
 @app.route('/done', methods=['POST', 'GET'])
 def done():
     if request.method == 'POST':
-        add_users(request.form['user'],
-                  request.form['ssn'],
-                  request.form['article'])
+        add_article(request.form['author'],
+                    request.form['title'],
+                    request.form['article'])
+        # is_edit
     return render_template('done.html')
 
 
-@app.route('/users/')
-@app.route('/users/<ssn>')
-def user(ssn):
-    users = read_users()['users']
-    for i in range(0, len(users)):
-        if users[i]['ssn'] == ssn:
-            return jsonify({'user': users[i]})
+@app.route('/edit')
+def edit():
+    return render_template('index.html', setter=Person('snn', 25, 6))
+
+
+@app.route('/edit/<title>')
+def edit_article(title):
+    print(get_articlec(title))
+    return render_template('index.html', article=get_articlec('title'), edit=True)
+
+
+@app.route('/article/')
+@app.route('/article/<ssn>')
+def get_article(title):
+    articles = read_articles()['articles']
+    for i in range(0, len(articles)):
+        if articles[i]['title'] == title:
+            return jsonify({'title': articles[i]})
     return render_template('page_not_found.html'), 404
 
 
-@app.route('/users')
+def get_articlec(title):
+    articles = read_articles()['articles']
+    for i in range(0, len(articles)):
+        if articles[i]['title'] == title:
+            return articles[i]
+    return render_template('page_not_found.html'), 404
+
+
+@app.route('/articles')
+def get_articles():
+    return render_template('articles.html', articles=read_articles()['articles'])
+
+
+@app.route('/api')
 def users():
-    return jsonify(read_users())
+    return jsonify(read_articles())
 
 
 @app.errorhandler(404)
@@ -44,34 +73,35 @@ def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
 
-def read_users():
-    users = {'users': []}
+def read_articles():
+    articles = {'articles': []}
     # noinspection PyBroadException
     try:
-        file = open('users.json', 'r')
-        users = json.loads(file.read())
+        file = open('articles.json', 'r')
+        articles = json.loads(file.read())
         file.close()
     except:
         print("Could not read file or file is empty")
-    return users
+    return articles
 
 
-def write_users(users):
+def write_articles(articles):
     # noinspection PyBroadException
     try:
-        file = open('users.json', 'w')
-        file.write(json.dumps(users))
+        file = open('articles.json', 'w')
+        file.write(json.dumps(articles))
         file.close()
     except:
         print("Could not read file")
 
 
-def add_users(user, ssn, article):
-    persons = read_users()
-    persons['users'].append({'user': user,
-                             'ssn': ssn,
-                             'article': article})
-    write_users(persons)
+def add_article(author, title, article):
+    articles = read_articles()
+    articles['articles'].append({'author': author,
+                                 'title': title,
+                                 'article': article})
+    # created, edited, revision, author: firstname, last name,
+    write_articles(articles)
 
 
 if __name__ == "__main__":

@@ -7,21 +7,21 @@
 </head>
 <body>
     <div class="center">
-        <h3>Contact form</h3>
-        <p>Add a person by fill in the form and click the submit button</p>
+        <h3>Wiqipedia</h3>
+        <p>Create a article by filling in the form and then submitting by the submit button {{ edit }}.</p>
     </div>
-    <form id="contact-form" class="center" action="/done" method="post" enctype="multipart/form-data">
+    <form id="article-form" class="center" action="/done" method="post" enctype="multipart/form-data">
         <div class="row">
-            <label for="name">User:</label><br>
-            <input class="name" name="user" type="text" value="" size="30" /><br>
+            <label for="name">Author</label><br>
+            <input class="name" name="author" type="text" value="{{ article.author }}" size="30" /><br>
         </div>
         <div class="row">
-            <label for="name">Title:</label><br>
-            <input class="name" name="ssn" type="text" value="4" size="30" /><br>
+            <label for="name">Article title</label><br>
+            <input class="name" name="title" type="text" value="{{ article.title }}" size="30" /><br>
         </div>
         <div class="row">
-            <label for="name">Your email:</label><br>
-            <textarea class="name" name="article" type="text" cols="50" rows="4" >{{ setter }}</textarea>
+            <label for="name">Article text</label><br>
+            <textarea class="name" name="article" type="text" cols="60" rows="20">{{ article.title }}</textarea>
         </div>
         <br>
         <input id="submit_button" type="submit" value="Submit"/>
