@@ -16,7 +16,7 @@ class Person:
 
 @app.route('/')
 def index():
-    return render_template('index.html', article=None, edit=False)
+    return render_template('index.html', article=None)
 
 
 @app.route('/done', methods=['POST', 'GET'])
@@ -29,15 +29,23 @@ def done():
     return render_template('done.html')
 
 
+@app.route('/edited', methods=['POST', 'GET'])
+def edited():
+    if request.method == 'POST':
+        add_article(request.form['author'],
+                    request.form['title'],
+                    request.form['article'])
+        # is_edit
+    return render_template('done.html')
+
 @app.route('/edit')
 def edit():
-    return render_template('index.html', setter=Person('snn', 25, 6))
+    return render_template('edit.html', setter=Person('snn', 25, 6))
 
 
 @app.route('/edit/<title>')
 def edit_article(title):
-    print(get_articlec(title))
-    return render_template('index.html', article=get_articlec('title'), edit=True)
+    return render_template('edit.html', article=get_articlec(title))
 
 
 @app.route('/article/')
