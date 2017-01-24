@@ -6,9 +6,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="center">
-        <h3>Wiqipedia</h3>
-        <p>Create a article by filling in the form and then submitting by the submit button {{ edit }}.</p>
+    <div id="header">
+        WONKIPEDIA
+        <span>Article stored</span>
     </div>
     <form id="article-form" class="center" action="/edited" method="post" enctype="multipart/form-data">
         <div class="row">

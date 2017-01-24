@@ -7,15 +7,20 @@
 </head>
 <body>
 <body>
-<ul>
-    {% for article in articles %}
-        <li>
-            <span> {{ article.title }} by {{ article.author }} </span>
-            <a  href="/article/{{ article.title }}">Read</a>
-            <a  href="/edit/{{ article.title }}">Edit</a>
-            <a  href="/delete/{{ article.title }}">Delete</a>
-        </li>
-    {% endfor %}
-</ul>
+    <div id="header">
+        WONKIPEDIA
+        <span>List of articles</span>
+        <input type="button" onclick="location.href='/add';" value="Add new article" />
+    </div>
+    <ul>
+        {% for article in articles %}
+            <li>
+                <input type="button" onclick="location.href='/article/{{ article.title }}';" value="Read" />
+                <input type="button" onclick="location.href='/edit/{{ article.title }}';" value="Edit" />
+                <input type="button" onclick="location.href='/article/{{ article.title }}';" value="Delete" />
+                &ensp;<span> {{ article.title }}, {{ article.author }} </span>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

@@ -9,19 +9,14 @@ from flask import Flask, request, render_template, jsonify, json
 app = Flask(__name__)
 
 
-class Person:
-    def __init__(self, name, age=None, sex=None):
-        self.name, self.age, self.sex = name, age, sex
-
-
 @app.route('/')
 def index():
-    return render_template('index.html', article=None)
+    return articles()
 
 
 @app.route('/add')
 def add():
-    return render_template('add.html', article=None)
+    return render_template('add.html')
 
 
 @app.route('/added', methods=['POST', 'GET'])
