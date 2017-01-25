@@ -3,7 +3,7 @@
     Magnus Sundström
     2017-01-20
 """
-
+import datetime
 from flask import Flask, request, render_template, jsonify, json
 
 app = Flask(__name__)
@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    print(datetime.datetime.now().strftime("%Y-%m-%d"))
     return articles()
 
 
@@ -24,7 +25,7 @@ def added():
     if request.method == 'POST':
         add_article(request.form['author'],
                     request.form['title'],
-                    request.form['article'])
+                    request.form['text'])
     return render_template('done.html')
 
 
@@ -33,7 +34,7 @@ def edited():
     if request.method == 'POST':
         edit_article(request.form['author'],
                      request.form['title'],
-                     request.form['article'])
+                     request.form['text'])
     return render_template('done.html')
 
 
@@ -110,7 +111,10 @@ def add_article(author, title, text):
     content = read_articles()
     content['articles'].append({'author': author,
                                 'title': title,
-                                'article': text})
+                                'text': text,
+                                'created': datetime.datetime.now().strftime("%Y-%m-%d"),
+                                'edited:': datetime.datetime.now().strftime("%Y-%m-%d"),
+                                'revision': 1})
     # created, edited, revision, author: firstname, last name,
     write_articles(content)
 
@@ -119,8 +123,10 @@ def edit_article(author, title, text):
     content = read_articles()
     for i in range(0, len(content['articles'])):
         if content['articles'][i]['title'] == title:
-            content['articles'][i]['author'] = author;
-            content['articles'][i]['article'] = text;
+            content['articles'][i]['author'] = author
+            content['articles'][i]['text'] = text
+            content['articles'][i]['edited'] = datetime.datetime.now().strftime("%Y-%m-%d")
+            content['articles'][i]['revision'] = int(content['articles'][i]['revision']) + 1
     write_articles(content)
 
 

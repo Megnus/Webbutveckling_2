@@ -18,7 +18,13 @@
                 <input type="button" onclick="location.href='/article/{{ article.title }}';" value="Read" />
                 <input type="button" onclick="location.href='/edit/{{ article.title }}';" value="Edit" />
                 <input type="button" onclick="location.href='/article/{{ article.title }}';" value="Delete" />
-                &ensp;<span> {{ article.title }}, {{ article.author }} </span>
+                &ensp;<span>
+                    <b>Title: </b>{{ article.title }}&emsp;
+                    <b>Author: </b>{{ article.author }}&emsp;
+                    <b>Created: </b>{{ article.created }}&emsp;
+                    <b>Edited: </b>{{ article.edited }}&emsp;
+                    <b>Rev: </b>{{ article.revision }}&emsp;
+                </span>
             </li>
         {% endfor %}
     </ul>

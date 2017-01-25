@@ -13,8 +13,10 @@
     <div class="center">
         <h1>{{ article.title }}</h1>
         <h4>Author: {{ article.author }}</h4>
-        <h4>Created: 2015-01-01 (Edited: 2015-01-01, Revision: 3)</h4>
-        <p>{{article.article }}</p>
+        <h4>Created: {{ article.created }}</h4>
+        <h4>Edited: {{ article.edited }}</h4>
+        <h4>Revision: {{ article.revision }}</h4>
+        <p>{{article.text }}</p>
     </div>
 
 </body>

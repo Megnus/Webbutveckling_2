@@ -1,5 +1,0 @@
-cd C:\source\lab\Python\Webbutveckling 2\Inlämningsuppgift 5
-set FLASK_APP="C:/source/lab/Python/Webbutveckling 2/Inlämningsuppgift 5/assignment_5.py"
-flask run
-
-
