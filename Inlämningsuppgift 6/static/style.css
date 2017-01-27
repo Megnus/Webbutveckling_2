@@ -69,18 +69,28 @@ margin-top: 5px;
     margin-bottom: 10px;
 }
 
-div#header > span {
-    padding-left: 20px;
+div#header span {
+    margin-left: 20px;
 }
 
-div#header > input {
-    margin-left: 40px;
+div#header input {
+    margin-left: 20px;
     background-color: Gray;
     border-color: white;
-    color: white
+    color: white;
+    padding: 8px;
+    -moz-border-radius:10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 15px;
+    border-radius: 15px;
+    behavior:url("border-radius.htc");
 }
 
-div#header > input:hover {
-    margin-left: 40px;
+div#header input:hover {
     background-color: #999;
+}
+
+div#header > a {
+    color: white;
+    text-decoration: none;
 }

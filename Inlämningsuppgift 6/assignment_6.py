@@ -3,6 +3,7 @@
     Magnus Sundström
     2017-01-20
 """
+
 import datetime
 from flask import Flask, request, render_template, jsonify, json
 
@@ -11,7 +12,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    print(datetime.datetime.now().strftime("%Y-%m-%d"))
     return articles()
 
 
@@ -20,38 +20,19 @@ def add():
     return render_template('add.html')
 
 
-@app.route('/added', methods=['POST', 'GET'])
-def added():
-    if request.method == 'POST':
-        add_article(request.form['author'],
-                    request.form['title'],
-                    request.form['text'])
-    return render_template('done.html')
-
-
-@app.route('/edited', methods=['POST', 'GET'])
-def edited():
-    if request.method == 'POST':
-        edit_article(request.form['author'],
-                     request.form['title'],
-                     request.form['text'])
-    return render_template('done.html')
-
-
 @app.route('/edit/<title>')
 def edit(title):
     return render_template('edit.html', article=get_article(title))
 
 
-@app.route('/article/')
-@app.route('/article/<title>')
-def article(title):
-    return render_template('read.html', article=get_article(title))
-
-
 @app.route('/articles')
 def articles():
     return render_template('articles.html', articles=read_articles()['articles'])
+
+
+@app.route('/article/<title>')
+def article(title):
+    return render_template('read.html', article=get_article(title))
 
 
 @app.route('/api')
@@ -64,16 +45,51 @@ def get_api_title(title):
     return jsonify(get_article(title))
 
 
+@app.route('/added', methods=['POST', 'GET'])
+def added():
+    if request.method == 'POST':
+        add_article(request.form['author'],
+                    request.form['title'],
+                    request.form['text'])
+    return render_template('done.html', message='Article was successfully added')
+
+
+@app.route('/edited', methods=['POST', 'GET'])
+def edited():
+    if request.method == 'POST':
+        edit_article(request.form['author'],
+                     request.form['title'],
+                     request.form['text'])
+    return render_template('done.html', message='Article was successfully edited')
+
+
+@app.route('/delete/<title>')
+def delete(title):
+    content = read_articles()
+    idx = get_index(content, title)
+    if idx >= 0:
+        content['articles'].pop(idx)
+    write_articles(content)
+    return render_template('done.html', message='Article was successfully deleted')
+
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
 
+def get_index(content, title):
+    for i in range(0, len(content['articles'])):
+        if content['articles'][i]['title'] == title:
+            return i
+    return -1
+
+
 def get_json_article(title):
-    content = read_articles()['articles']
-    for i in range(0, len(content)):
-        if content[i]['title'] == title:
-            return jsonify({'title': content[i]})
+    content = read_articles()
+    idx = get_index(content, title)
+    if idx >= 0:
+        return jsonify({'title': content['articles'][idx]})
     return render_template('page_not_found.html'), 404
 
 
@@ -109,24 +125,24 @@ def write_articles(content):
 
 def add_article(author, title, text):
     content = read_articles()
+    date = datetime.datetime.now().strftime("%Y-%m-%d")
     content['articles'].append({'author': author,
                                 'title': title,
                                 'text': text,
-                                'created': datetime.datetime.now().strftime("%Y-%m-%d"),
-                                'edited:': datetime.datetime.now().strftime("%Y-%m-%d"),
+                                'created': date,
+                                'edited': date,
                                 'revision': 1})
-    # created, edited, revision, author: firstname, last name,
     write_articles(content)
 
 
 def edit_article(author, title, text):
     content = read_articles()
-    for i in range(0, len(content['articles'])):
-        if content['articles'][i]['title'] == title:
-            content['articles'][i]['author'] = author
-            content['articles'][i]['text'] = text
-            content['articles'][i]['edited'] = datetime.datetime.now().strftime("%Y-%m-%d")
-            content['articles'][i]['revision'] = int(content['articles'][i]['revision']) + 1
+    idx = get_index(content, title)
+    if idx >= 0:
+        content['articles'][idx]['author'] = author
+        content['articles'][idx]['text'] = text
+        content['articles'][idx]['edited'] = datetime.datetime.now().strftime("%Y-%m-%d")
+        content['articles'][idx]['revision'] = int(content['articles'][idx]['revision']) + 1
     write_articles(content)
 
 
